@@ -8,6 +8,12 @@ Coord applePosition = new Coord(random.Next(1, gridDimensions.X - 1), random.Nex
 int frameRate = 100; // Frame rate in milliseconds
 Direction snakeDirection = Direction.Down; // Initial direction of the snake
 
+List<Coord> snakeBody = new List<Coord>(); // List to hold the snake's body segments
+int tailLength = 1; // Initial length of the snake's tail
+
+
+
+
 // Main game loop
 while (true)
 {   Console.Clear(); // Clear the console for each frame
@@ -18,7 +24,7 @@ while (true)
         for (int x = 0; x < gridDimensions.X; x++)
         {
             Coord currentCord = new Coord(x, y);
-            if (snakePosition.Equals(currentCord))
+            if (snakePosition.Equals(currentCord) || snakeBody.Contains(currentCord))
             {
                 Console.Write("■");//Snake head
             }
@@ -36,6 +42,14 @@ while (true)
         }
         Console.WriteLine();
     }
+    snakeBody.Add(new Coord(snakePosition.X, snakePosition.Y)); // Add the current position to the snake's body
+
+    if(snakeBody.Count > tailLength) // If the snake's body exceeds the tail length, remove the oldest segment
+    {
+        snakeBody.RemoveAt(0);
+    }
+
+
     DateTime time = DateTime.Now;// start of frame time
 
     while ((DateTime.Now - time).Milliseconds < frameRate){ 
