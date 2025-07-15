@@ -36,6 +36,31 @@ while (true)
         }
         Console.WriteLine();
     }
-    Thread.Sleep(frameRate); // Control the frame rate
+    DateTime time = DateTime.Now;// start of frame time
 
+    while ((DateTime.Now - time).Milliseconds < frameRate){ 
+
+        if(Console.KeyAvailable)
+        {
+            ConsoleKey key = Console.ReadKey().Key;
+            switch (key) {
+                case ConsoleKey.LeftArrow:
+                    snakeDirection = Direction.Left;
+                    break;
+                case ConsoleKey.RightArrow:
+                    snakeDirection = Direction.Right;
+                    break;
+                case ConsoleKey.UpArrow:
+                    snakeDirection = Direction.Up;
+                    break;
+                case ConsoleKey.DownArrow:
+                    snakeDirection = Direction.Down;
+                    break;
+
+            }
+        }
+    }
+    {
+        // Wait for the specified frame rate
+    }
 }
