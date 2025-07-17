@@ -42,6 +42,13 @@ while (true)
         }
         Console.WriteLine();
     }
+
+    if(snakePosition.Equals(applePosition)) // Check if the snake's head collides with the apple
+    {
+        tailLength++; // Increase the tail length
+        applePosition = new Coord(random.Next(1, gridDimensions.X - 1), random.Next(1, gridDimensions.Y - 1)); // Generate a new apple position
+    }
+
     snakeBody.Add(new Coord(snakePosition.X, snakePosition.Y)); // Add the current position to the snake's body
 
     if(snakeBody.Count > tailLength) // If the snake's body exceeds the tail length, remove the oldest segment
