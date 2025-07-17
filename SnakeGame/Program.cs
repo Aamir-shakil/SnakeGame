@@ -7,6 +7,7 @@ Random random = new Random();
 Coord applePosition = new Coord(random.Next(1, gridDimensions.X - 1), random.Next(1, gridDimensions.Y - 1));//Random position for appple within dimensions of play area 
 int frameRate = 100; // Frame rate in milliseconds
 Direction snakeDirection = Direction.Down; // Initial direction of the snake
+int score = 0; // Initial score
 
 List<Coord> snakeBody = new List<Coord>(); // List to hold the snake's body segments
 int tailLength = 1; // Initial length of the snake's tail
@@ -17,7 +18,9 @@ int tailLength = 1; // Initial length of the snake's tail
 // Main game loop
 while (true)
 {   Console.Clear(); // Clear the console for each frame
+    Console.WriteLine("Score: " + score);
     snakePosition.ApplyMovementDirection(snakeDirection); // Move the snake in the current direction
+
 
     for (int y = 0; y < gridDimensions.Y; y++)
     {
@@ -43,15 +46,33 @@ while (true)
         Console.WriteLine();
     }
 
-    if(snakePosition.Equals(applePosition)) // Check if the snake's head collides with the apple
+    if (snakePosition.Equals(applePosition)) // Check if the snake's head collides with the apple
     {
         tailLength++; // Increase the tail length
+        score++; // Increase the score
         applePosition = new Coord(random.Next(1, gridDimensions.X - 1), random.Next(1, gridDimensions.Y - 1)); // Generate a new apple position
     }
 
-    snakeBody.Add(new Coord(snakePosition.X, snakePosition.Y)); // Add the current position to the snake's body
 
-    if(snakeBody.Count > tailLength) // If the snake's body exceeds the tail length, remove the oldest segment
+
+    else if (
+      snakePosition.X == 0 || snakePosition.X == gridDimensions.X - 1 ||
+      snakePosition.Y == 0 || snakePosition.Y == gridDimensions.Y - 1 ||
+      snakeBody.Contains(snakePosition))
+    {
+        score = 0; // Reset score if snake hits the wall
+        tailLength = 1; // Reset tail length
+        snakePosition = new Coord(10, 1); // Reset snake position
+        snakeDirection = Direction.Down; // Reset snake direction
+        snakeBody.Clear(); // Clear the snake's body
+        continue;
+    }
+    snakeBody.Add(new Coord(snakePosition.X, snakePosition.Y));// Add the current position to the snake's body
+
+
+
+
+    if (snakeBody.Count > tailLength) // If the snake's body exceeds the tail length, remove the oldest segment
     {
         snakeBody.RemoveAt(0);
     }
